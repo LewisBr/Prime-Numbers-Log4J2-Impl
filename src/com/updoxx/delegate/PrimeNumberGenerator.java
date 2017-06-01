@@ -5,7 +5,8 @@ import com.updoxx.domain.ResponseWrapper;
 /**
  * Interface used to generate
  */
-public interface PrimeNumberGenerator {
+interface PrimeNumberGenerator {
     ResponseWrapper generate(int startingValue, int EndingValue);
+
     boolean isPrime(int value);
 }

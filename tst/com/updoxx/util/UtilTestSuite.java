@@ -1,13 +1,12 @@
-package com.updoxx.delegate;
+package com.updoxx.util;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        PrimeDelegateTests.class,
-        InvokerFactoryTests.class
+        HelperUtilTests.class
 })
-public class DelegateTestSuite {
+public class UtilTestSuite {
     // Empty Constructor for Testing Suite
 }

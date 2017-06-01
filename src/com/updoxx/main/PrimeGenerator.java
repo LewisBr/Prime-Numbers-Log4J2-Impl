@@ -1,10 +1,15 @@
 package com.updoxx.main;
 
+import com.updoxx.delegate.PrimeInvokerFactory;
+import com.updoxx.util.Constants;
 import com.updoxx.util.Helper;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -22,14 +27,60 @@ import java.util.List;
  **/
 public class PrimeGenerator {
     private static final Logger LOGGER = LogManager.getLogger(PrimeGenerator.class);
-    private static List<String> arguments;
+
+    private static PrimeInvokerFactory factory;
 
     public static void main(String[] args) {
+        LOGGER.info(Constants.INSTRUCTIONS);
+
+        // Instantiate classpath variables
+        List<String> arguments;
+        String       inputString = null;
+        factory = new PrimeInvokerFactory();
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+
+        // Put array into collection list for easy contains check
+        // Note:: In a real program these parameters would be used as system properties passed in on input.  But for ease of use I figured this solution would be fine enough
         arguments = Arrays.asList(args);
-        if(arguments.contains("-d")){
-            Helper.setLog4JLogLevels(Level.DEBUG);
+        if (arguments.contains("-h") || arguments.contains("-help")) {
+            LOGGER.info(Constants.HELP);
         }
+        if (arguments.contains("-d") || arguments.contains("-debug")) {
+            Helper.setLog4JLogLevel(Level.DEBUG);
+        }
+
+        // Process all input arguments, if it's an integer pass it into the invoker factory.
         Iterator<String> argumentIterator = arguments.iterator();
-        LOGGER.info("TEST");
+        argumentIterator.forEachRemaining(currentArgument -> {
+            LOGGER.debug("Processing Argument: '{}'", currentArgument);
+            try {
+                int parsedArgument = Integer.parseInt(currentArgument);
+                factory.processNewInteger(parsedArgument);
+            } catch (NumberFormatException e) {
+                // Thought process here, since I'm allowing non-integer values if a value passed in is a non-integer I'll continue until I find one
+                LOGGER.debug("Current Argument '{}' is not a valid Integer value -- skipping.", currentArgument);
+            }
+        });
+
+        // Read in User Input -- If no content is entered exit the loop.
+        while (true) {
+            try {
+                // Print console message of what input the user should input.
+                factory.logNextInputState();
+                inputString = inputReader.readLine();
+                if (inputString.length() == 0) {
+                    break;
+                }
+                int inputInteger = Integer.parseInt(inputString);
+                factory.processNewInteger(inputInteger);
+            } catch (IOException e) {
+                LOGGER.error("Unhandled Input, please try another input or hit Enter to exit.");
+            } catch (NumberFormatException e) {
+                LOGGER.info(Constants.INPUTINVALID, inputString);
+            }
+        }
+
+        // Print exit text
+        LOGGER.info(Constants.EXITTEXT);
     }
 }
