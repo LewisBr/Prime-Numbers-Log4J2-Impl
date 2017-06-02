@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Updoxx_CC_Prime_Numbers_jar</output-path>
     <root id="archive" name="Updoxx-CC-Prime-Numbers.jar">
       <element id="module-output" name="Updoxx-CC-Prime-Numbers" />
-      <element id="library" level="project" name="log4j-1.2-api-2.8.2" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/log4j-core-2.8.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/log4j-api-2.8.2.jar" path-in-jar="/" />
     </root>

@@ -1,6 +1,7 @@
 package com.updoxx.util;
 
 import com.updoxx.delegate.PrimeDelegate;
+import com.updoxx.delegate.implementations.SievePrimeImplementation;
 import com.updoxx.domain.ResponseWrapper;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +22,7 @@ public class HelperUtilTests extends UtilConstants {
     public void setup() {
         LOGGER = LogManager.getLogger(HelperUtilTests.class);
         Helper.setLog4JLogLevel(Level.ERROR);   // Set logging level to ERROR to prevent filling console
-        delegate = new PrimeDelegate();
+        delegate = new SievePrimeImplementation();
     }
 
     @After

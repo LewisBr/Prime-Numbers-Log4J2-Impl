@@ -18,12 +18,13 @@ import java.util.List;
  * @author Bryan Lewis
  * @description Implementation for Updoxx Interview -- Code Challenge.
  * @usage This is a command line based utility that uses user prompts to generate a list of Integers that are primes between two given inputs.
- * Numbers must be alphanumeric and non-negative, and fall between the values of 0 and INTEGER.MAX_VALUE (2,147,483,647).
- * Can be invoked with command line argument of -h or -help to print manual page before usage (Prints out this blurb).
- * Can be invoked with command line argument of -d or -debug to print additional debug materials, if you're into that sort of thing.    //Todo Keep and implement Log4J2? Make two versions
+ * Numbers must be alphanumeric and non-negative, and fall between the values of 0 and INTEGER.MAX_VALUE-1 (2,147,483,646).
+ * Can be invoked with command line argument of '-h' or '-help' to print manual page before usage (Prints out this blurb).
+ * Can be invoked with command line argument of '-d' or '-debug' to print additional debug materials, if you're into that sort of thing.
  * Can be invoked with any number of command line Integer arguments, will pair available command line arguments and print their resultant before moving on.
  * If invoked with an uneven amount of Integer arguments or none at all will prompt user for inputs before completing that specified run.
- * At any available user input if the user input is just a return character exit the program. // Todo keep counter of successful runs?
+ * At any available user input if the user inputs 'b' or '-b' the program will attempt to gather the first number again.
+ * At any available user input if the user input is just a return character exit the program.
  **/
 public class PrimeGenerator {
     private static final Logger LOGGER = LogManager.getLogger(PrimeGenerator.class);
@@ -68,15 +69,24 @@ public class PrimeGenerator {
                 // Print console message of what input the user should input.
                 factory.logNextInputState();
                 inputString = inputReader.readLine();
+                // If input is return character exit the user input section
                 if (inputString.length() == 0) {
                     break;
                 }
+                // Parse integer -- could throw NumberFormatException
                 int inputInteger = Integer.parseInt(inputString);
+                // Pass new integer to factory.
                 factory.processNewInteger(inputInteger);
             } catch (IOException e) {
                 LOGGER.error("Unhandled Input, please try another input or hit Enter to exit.");
             } catch (NumberFormatException e) {
-                LOGGER.info(Constants.INPUTINVALID, inputString);
+                // Add case to allow users to revert back to a fresh state if first input was erroneous.
+                if (inputString != null && inputString.toLowerCase().startsWith("b") || inputString.toLowerCase().startsWith("-b")) {
+                    LOGGER.info(Constants.INPUT_RESETSTATE, inputString);
+                    factory.resetState();
+                } else {
+                    LOGGER.info(Constants.INPUT_INVALID, inputString);
+                }
             }
         }
 

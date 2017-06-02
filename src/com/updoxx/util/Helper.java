@@ -8,6 +8,9 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
+/**
+ * Helper class that provides various methods that are utilized in multiple places, or it was cleaner to house them here.
+ */
 public class Helper {
     private static final Logger LOGGER = LogManager.getLogger(Helper.class);
 

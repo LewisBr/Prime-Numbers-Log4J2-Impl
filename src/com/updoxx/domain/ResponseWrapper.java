@@ -5,6 +5,10 @@ import com.updoxx.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Wrapper class that returns a set of properties that relate to a specific run of {@link com.updoxx.delegate.PrimeDelegate#generate(int, int)}.
+ * A note about this is I took some liberties on the requirements of the assignment, the provided interface returned just the listOfPrimes, but I'm resolving more details.
+ */
 public class ResponseWrapper {
     private List<Integer> listOfPrimes;
     private String        responseCode;
