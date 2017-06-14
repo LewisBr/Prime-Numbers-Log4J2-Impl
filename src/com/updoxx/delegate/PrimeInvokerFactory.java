@@ -44,10 +44,12 @@ public class PrimeInvokerFactory {
 
             // Invoke the correct generate() implementation based on the run criteria.
             // Use Miller-Rabin when high bound is a low number, when it's very large but not doing a majority of the range, and when it's exceedingly high.
+            // Staged to various cases.  If this were a real program would be more beneficial to use a benchmarking utility to find a direct correlation instead of case analysis.
             if (secondNumber <= 100 ||
                     (secondNumber >= Integer.MAX_VALUE / 100 && diffRatio <= .10) ||
-                    (secondNumber >= Integer.MAX_VALUE / 10 && diffRatio <= .05)) {
-                // If we are only computing ~250 numbers do it non-threaded, otherwise thread it.
+                    (secondNumber >= Integer.MAX_VALUE / 10 && diffRatio <= .3) ||
+                    (secondNumber >= Integer.MAX_VALUE / 6 && diffRatio <= .7)) {
+                // If we are only computing ~250 numbers do it non-threaded, otherwise thread it. This is because of the base overhead time from thread management.
                 if (diffRange <= 250) {
                     delegate = new MillerRabinImplementation();
                 } else {
